@@ -1,0 +1,1 @@
+This experiment fully works in Firefox 4 beta 7. Chrome seems to crash a lot with data:uri objects.
