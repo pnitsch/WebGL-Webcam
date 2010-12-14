@@ -1,0 +1,23 @@
+body {
+	background: #000000;
+	margin: 0;
+	width: 100%;
+	overflow: hidden;
+	font: 14px Georgia, "Times New Roman", Times, serif;
+	color: #FFFFFF;
+}
+
+#flash {
+	width: 320px;
+	margin-top: 150px;
+	margin-left: auto ;
+	margin-right: auto ;
+}
+
+#webgl {
+	visibility: hidden;
+	width: 700px;
+	margin-top: 0px;
+	margin-left: auto ;
+	margin-right: auto ;
+}

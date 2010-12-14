@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>WebGL Webcam</title>
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" href="css/global.css" type="text/css" />
+
+<script id="shader-vs" type="x-shader/x-vertex">
+	attribute vec3 aVertex;
+	uniform float time;
+	attribute vec2 aTexCoord0;
+	uniform mat4 uMVMatrix, uPMatrix, uRotMatrix;
+	varying vec4 v_color, normal, light_dir, eye_vec, lookat;
+	varying vec2 vTexCoord0;
+	
+	void main(void) {			
+		vec4 vVertex = uMVMatrix*vec4(aVertex, 1.0);
+		eye_vec = -vVertex;
+		vTexCoord0 = aTexCoord0;
+		
+		vec4 temp_pos = uPMatrix*uMVMatrix*uRotMatrix*vec4(aVertex, 1.0);
+		
+		temp_pos.x += (cos(temp_pos.x*time)*temp_pos.x-sin(temp_pos.y*time)*temp_pos.y)/12.0;
+		temp_pos.y += (cos(temp_pos.y*time)*temp_pos.y+sin(temp_pos.x*time)*temp_pos.x)/12.0;
+		
+		gl_Position = temp_pos;
+
+		float darkness = 13.0-gl_Position.z;
+		v_color = vec4((darkness/4.0)-0.2, (darkness/4.0)-0.2, (darkness/4.0)-0.2, darkness);
+	}
+</script>
+
+<script id="shader-fs" type="x-shader/x-fragment">
+	#ifdef GL_ES
+	precision highp float;
+	#endif
+	
+	varying vec4 v_color;
+	varying vec2 vTexCoord0;
+	
+	uniform sampler2D uTexture0;
+
+	void main(void) {
+		gl_FragColor = v_color*	texture2D(uTexture0, vTexCoord0.st);
+	}
+</script>
+
+<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/swfobject.js"></script>
+<script type="text/javascript" src="js/Sylvester.js"></script>
+<script type="text/javascript" src="js/glUtils.js"></script>
+<script type="text/javascript" src="js/webcam.js"></script>
+
+</head>
+<body>
+<div id="flash">
+	<div id="flashContent">you need flash</div>
+</div>
+<div id="webgl">
+	Press [1-7] to divide the gasket. Press [Q] for disturbance.<br>
+	<canvas id="canvas" width="700" height="700"></canvas>
+</div>
+</body>
+</html>
+
